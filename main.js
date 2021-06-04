@@ -2,7 +2,7 @@
 
 const player1 = {
 	name: `SCORPION`,
-	hp: 10,
+	hp: 100,
 	img: `http://reactmarathon-api.herokuapp.com/assets/scorpion.gif`,
 	weapon: [`knife, spear, strapon, mem`],
 	attak: function () {
@@ -12,7 +12,7 @@ const player1 = {
 
 const player2 = {
 	name: `SUB-ZERO`,
-	hp: 20,
+	hp: 100,
 	img: `http://reactmarathon-api.herokuapp.com/assets/subzero.gif`,
 	weapon: [`knife, spear, strapon, mem`],
 	attak: function () {
@@ -34,7 +34,7 @@ const createPlayer = function (playerClass, player) {
 
 	const $life = document.createElement(`div`);
 	$life.classList.add(`life`);
-	$life.style.width = 100 + `%`;
+	$life.style.width = player.hp + `%`;
 
 
 	const $name = document.createElement(`div`);
