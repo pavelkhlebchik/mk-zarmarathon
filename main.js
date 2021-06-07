@@ -111,7 +111,7 @@ const createReloadButton = function () {
 	return $reloadWrap;
 };
 
-$randomButton.addEventListener(`click`, function () {
+$randomButton.addEventListener(`click`, function (evt) {
 	player1.damage(randomNumbers(1, 20));
 	player2.damage(randomNumbers(1, 20));
 	player1.render();
@@ -129,6 +129,7 @@ $randomButton.addEventListener(`click`, function () {
 	} else if (player2.hp === 0 && player1.hp === 0) {
 		$arenas.appendChild(battleResult());
 	}
+
 });
 
 $arenas.appendChild(createPlayer(player1));
