@@ -23,7 +23,7 @@ const elHP = function () {
 };
 
 const renderHP = function () {
-	return elHP().style.width = this.hp + `%`;
+	return this.elHP().style.width = this.hp + `%`;
 };
 
 const player1 = {
