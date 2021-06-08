@@ -115,7 +115,7 @@ const createReloadButton = function () {
 	return $reloadWrap;
 };
 
-$randomButton.addEventListener(`click`, function (evt) {
+$randomButton.addEventListener(`click`, function () {
 	player1.damage(randomNumbers(1, 20));
 	player2.damage(randomNumbers(1, 20));
 	player1.render();
