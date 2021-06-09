@@ -24,7 +24,7 @@ const elHP = function () {
 };
 
 const renderHP = function () {
-	return this.elHP().style.width = this.hp + `%`;
+	this.elHP().style.width = this.hp + `%`;
 };
 
 const player1 = {
@@ -33,12 +33,10 @@ const player1 = {
 	hp: 100,
 	img: `http://reactmarathon-api.herokuapp.com/assets/scorpion.gif`,
 	weapon: [`knife, spear, strapon, mem`],
-	attak: function () {
-		console.log(this.name + ` Fight`);
-	},
+	attak,
 	damage: changeHP,
-	elHP: elHP,
-	render: renderHP
+	elHP,
+	renderHP
 };
 
 const player2 = {
@@ -47,12 +45,10 @@ const player2 = {
 	hp: 100,
 	img: `http://reactmarathon-api.herokuapp.com/assets/subzero.gif`,
 	weapon: [`knife, spear, strapon, mem`],
-	attak: function () {
-		console.log(this.name + ` Fight`);
-	},
+	attak,
 	damage: changeHP,
-	elHP: elHP,
-	render: renderHP
+	elHP,
+	renderHP
 };
 
 const createElement = function (tag, className) {
