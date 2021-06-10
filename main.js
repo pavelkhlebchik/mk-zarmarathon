@@ -140,7 +140,6 @@ $formFight.addEventListener(`submit`, function (evt) {
 	const attack = {};
 
 	for (let item of $formFight) {
-		console.log(item);
 		if (item.checked && item.name === `hit`) {
 			attack.value = randomNumbers(HIT[item.value], HIT[item.value]);
 			attack.hit = item.value;
