@@ -55,7 +55,7 @@ const player2 = {
 	hp: 100,
 	img: `http://reactmarathon-api.herokuapp.com/assets/subzero.gif`,
 	weapon: [`knife, spear, strapon, mem`],
-	attak,
+	attackMessage,
 	damage: changeHP,
 	elHP,
 	renderHP
