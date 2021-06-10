@@ -24,7 +24,7 @@ const elHP = function () {
 };
 
 const renderHP = function () {
-	return this.elHP().style.width = this.hp + `%`;
+	this.elHP().style.width = this.hp + `%`;
 };
 
 const player1 = {
