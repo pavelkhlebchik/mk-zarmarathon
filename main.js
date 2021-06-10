@@ -176,6 +176,4 @@ $formFight.addEventListener(`submit`, function (evt) {
 		$arenas.appendChild(battleResult());
 	}
 
-	console.log(`####, a`, attack);
-	console.log(`####, e`, enemy);
 });
