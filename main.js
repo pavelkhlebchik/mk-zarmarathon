@@ -1,8 +1,8 @@
 'use strict';
 
 const $arenas = document.querySelector(`.arenas`);
-// const $randomButton = document.querySelector(`.button`);
-// const $restartButton = document.querySelector(`.restartWrap .button`);
+const $randomButton = document.querySelector(`.button`);
+const $restartButton = document.querySelector(`.restartWrap .button`);
 const $formFight = document.querySelector(`.control`);
 const HIT = {
 	head: 30,
@@ -16,7 +16,7 @@ const randomNumbers = function (min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-const attak = function () {
+const attackMessage = function () {
 	console.log(console.log(this.name + ` Fight`));
 }
 const changeHP = function (damage) {
@@ -43,7 +43,7 @@ const player1 = {
 	hp: 100,
 	img: `http://reactmarathon-api.herokuapp.com/assets/scorpion.gif`,
 	weapon: [`knife, spear, strapon, mem`],
-	attak,
+	attackMessage,
 	damage: changeHP,
 	elHP,
 	renderHP
@@ -121,34 +121,12 @@ const createReloadButton = function () {
 	return $reloadWrap;
 };
 
-// $randomButton.addEventListener(`click`, function () {
-// 	player1.damage(randomNumbers(1, 20));
-// 	player2.damage(randomNumbers(1, 20));
-// 	player1.renderHP();
-// 	player2.renderHP();
-
-// 	if (player1.hp === 0 || player2.hp === 0) {
-// 		$randomButton.disabled = true;
-// 		$arenas.appendChild(createReloadButton());
-// 	}
-
-// 	if (player1.hp > player2.hp && player2.hp <= 0) {
-// 		$arenas.appendChild(battleResult(player1.name));
-// 	} else if (player2.hp > player1.hp && player1.hp <= 0) {
-// 		$arenas.appendChild(battleResult(player2.name));
-// 	} else if (player2.hp === 0 && player1.hp === 0) {
-// 		$arenas.appendChild(battleResult());
-// 	}
-
-// });
-
 $arenas.appendChild(createPlayer(player1));
 $arenas.appendChild(createPlayer(player2));
 
 const enemyAttack = function () {
 	const hit = ATTACK[randomNumbers(0, 2)];
 	const defence = ATTACK[randomNumbers(0, 2)];
-
 	return {
 		value: randomNumbers(HIT[hit], HIT[hit]),
 		hit,
@@ -162,6 +140,7 @@ $formFight.addEventListener(`submit`, function (evt) {
 	const attack = {};
 
 	for (let item of $formFight) {
+		console.log(item);
 		if (item.checked && item.name === `hit`) {
 			attack.value = randomNumbers(HIT[item.value], HIT[item.value]);
 			attack.hit = item.value;
@@ -170,9 +149,33 @@ $formFight.addEventListener(`submit`, function (evt) {
 		if (item.checked && item.name === `defence`) {
 			attack.defence = item.value;
 		}
-
 		item.checked = false;
 	}
+
+	if (attack.hit === enemy.defence) {
+		attack.value = 0;
+	} else if (enemy.hit === attack.defence) {
+		enemy.value = 0;
+	}
+
+	player1.damage(enemy.value);
+	player2.damage(attack.value);
+	player1.renderHP();
+	player2.renderHP();
+
+	if (player1.hp === 0 || player2.hp === 0) {
+		$randomButton.disabled = true;
+		$arenas.appendChild(createReloadButton());
+	}
+
+	if (player1.hp > player2.hp && player2.hp <= 0) {
+		$arenas.appendChild(battleResult(player1.name));
+	} else if (player2.hp > player1.hp && player1.hp <= 0) {
+		$arenas.appendChild(battleResult(player2.name));
+	} else if (player2.hp === 0 && player1.hp === 0) {
+		$arenas.appendChild(battleResult());
+	}
+
 	console.log(`####, a`, attack);
 	console.log(`####, e`, enemy);
 });
