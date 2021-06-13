@@ -181,7 +181,6 @@ $formFight.addEventListener(`submit`, function (evt) {
 		player2.damage(player.value);
 		player2.renderHP();
 	}
-	console.log(player.value + ` ` + enemy.value);
 
 	showResult();
 });
