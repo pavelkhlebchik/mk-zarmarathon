@@ -132,7 +132,6 @@ const createPlayer = function (player) {
 	$player.appendChild($progressBar);
 	$player.appendChild($character);
 
-
 	return $player;
 };
 
@@ -164,6 +163,46 @@ const createReloadButton = function () {
 $arenas.appendChild(createPlayer(player1));
 $arenas.appendChild(createPlayer(player2));
 
+const generateLogs = function (type, player1, player2) {
+	const date = new Date();
+	const normalize = (num) => (num.toString().length > 1 ? num : `0${num}`);
+	const time = `${normalize(date.getHours())}:${normalize(date.getMinutes())}:${normalize(date.getSeconds())}`;
+	let text = ``;
+
+	switch (type) {
+		case (`start`):
+			text = logs[type].replace(`[time]`, time)
+				.replace(`[player1]`, player1.name)
+				.replace(`[player2]`, player2.name);
+			break;
+
+		case (`hit`):
+			text = logs[type][randomNumbers(0, logs[type].length)]
+				.replace(`[playerKick]`, player1.name)
+				.replace(`[playerDefence]`, player2.name)
+			break;
+
+		case (`defence`):
+			text = logs[type][randomNumbers(0, logs[type].length)]
+				.replace(`[playerKick]`, player2.name)
+				.replace(`[playerDefence]`, player1.name)
+			break;
+
+		case (`end`):
+			text = logs[type][randomNumbers(0, logs[type].length)]
+				.replace(`[playerLose]`, player2.name)
+				.replace(`[playerWins]`, player1.name)
+			break;
+
+		case (`draw`):
+			text = logs[draw];
+	};
+
+	const chatText = `<p>${time} - ${text}</p>`;
+	$chat.insertAdjacentHTML(`afterbegin`, chatText);
+}
+
+
 const enemyAttack = function () {
 	const hit = ATTACK[randomNumbers(0, 2)];
 	const defence = ATTACK[randomNumbers(0, 2)];
@@ -192,6 +231,8 @@ const playerAttack = function () {
 	return attack;
 }
 
+document.onload = generateLogs(`start`, player1, player2);
+
 const showResult = function () {
 	if (player1.hp === 0 || player2.hp === 0) {
 		$randomButton.disabled = true;
@@ -200,19 +241,15 @@ const showResult = function () {
 
 	if (player1.hp > player2.hp && player2.hp <= 0) {
 		$arenas.appendChild(battleResult(player1.name));
+		generateLogs(`end`, player1, player2);
 	} else if (player2.hp > player1.hp && player1.hp <= 0) {
 		$arenas.appendChild(battleResult(player2.name));
+		generateLogs(`end`, player2, player1);
 	} else if (player2.hp === 0 && player1.hp === 0) {
 		$arenas.appendChild(battleResult());
+		generateLogs(`draw`);
 	}
 };
-
-const generateLogs = function (type, player1, player2) {
-	const text = logs[type][randomNumbers(0, logs[type].length)].replace([`playerDefence`], player1.name).replace([`playerKick`], player2.name);
-	const chatText = `<p> ${text} </p>`;
-	$chat.insertAdjacentHTML(`afterbegin`, chatText);
-
-}
 
 $formFight.addEventListener(`submit`, function (evt) {
 	evt.preventDefault();
@@ -222,13 +259,18 @@ $formFight.addEventListener(`submit`, function (evt) {
 	if (player.defence !== enemy.hit) {
 		player1.damage(enemy.value);
 		player1.renderHP();
-		generateLogs(`hit`, player1, player2);
+		generateLogs(`hit`, player2, player1);
+	} else {
+		generateLogs(`defence`, player1, player2);
 	}
 
 	if (enemy.defence !== player.hit) {
 		player2.damage(player.value);
 		player2.renderHP();
-		generateLogs(`hit`, player2, player1);
+		generateLogs(`hit`, player1, player2);
+	} else {
+		generateLogs(`defence`, player2, player1);
 	}
+
 	showResult();
 });
