@@ -191,6 +191,54 @@ const playerAttack = function () {
 	return attack;
 }
 
+const generateLogs = function (type, player1, player2, damageHP) {
+	const date = new Date();
+	const normalize = (num) => (num.toString().length > 1 ? num : `0${num}`);
+	const time = `${normalize(date.getHours())}:${normalize(date.getMinutes())}:${normalize(date.getSeconds())}`;
+	let text = ``;
+	let chatText = ``;
+	switch (type) {
+		case (`start`):
+			text = logs[type].replace(`[time]`, time)
+				.replace(`[player1]`, player1.name)
+				.replace(`[player2]`, player2.name);
+			const startText = `<p>[${time}] - ${text}</p>`;
+			$chat.insertAdjacentHTML(`afterbegin`, startText)
+			break;
+
+		case (`end`):
+			text = logs[type][randomNumbers(0, logs[type].length - 1)]
+				.replace(`[playerLose]`, player2.name)
+				.replace(`[playerWins]`, player1.name)
+
+			chatText = `<p>[${time}] - ${text}</p>`;
+			$chat.insertAdjacentHTML(`afterbegin`, chatText);
+			break;
+
+		case (`hit`):
+			text = logs[type][randomNumbers(0, logs[type].length - 1)]
+				.replace(`[playerDefence]`, player1.name)
+				.replace(`[playerKick]`, player2.name)
+			chatText = `<p>[${time}] - ${text} - ${damageHP} [${player1.hp}/100] </p>`
+			$chat.insertAdjacentHTML(`afterbegin`, chatText);
+			break;
+
+		case (`defence`):
+			text = logs[type][randomNumbers(0, logs[type].length - 1)]
+				.replace(`[playerKick]`, player1.name)
+				.replace(`[playerDefence]`, player2.name)
+			chatText = `<p>[${time}] - ${text} - ${damageHP} [${player2.hp}/100] </p>`
+			$chat.insertAdjacentHTML(`afterbegin`, chatText);
+			break;
+
+		case (`draw`):
+			text = logs.draw;
+			chatText = `<p>[${time}] - ${text}</p>`;
+			$chat.insertAdjacentHTML(`afterbegin`, chatText);
+	};
+};
+
+document.onload = generateLogs(`start`, player1, player2);
 
 const showResult = function () {
 	if (player1.hp === 0 || player2.hp === 0) {
@@ -218,60 +266,22 @@ $formFight.addEventListener(`submit`, function (evt) {
 	if (player.defence !== enemy.hit) {
 		player1.damage(enemy.value);
 		player1.renderHP();
-		generateLogs(`hit`, player1, player2);
+		generateLogs(`hit`, player1, player2, enemy.value);
 	} else {
-		generateLogs(`defence`, player2, player1);
+		enemy.value = 0
+		generateLogs(`defence`, player2, player1, enemy.value);
 	}
 
 	if (enemy.defence !== player.hit) {
 		player2.damage(player.value);
 		player2.renderHP();
-		generateLogs(`hit`, player2, player1);
+		generateLogs(`hit`, player2, player1, player.value);
 	} else {
-		generateLogs(`defence`, player1, player2);
+		player.value = 0;
+		generateLogs(`defence`, player1, player2, player.value);
 	}
 
 	showResult();
 });
 
-const generateLogs = function (type, player1, player2) {
-	const date = new Date();
-	const normalize = (num) => (num.toString().length > 1 ? num : `0${num}`);
-	const time = `${normalize(date.getHours())}:${normalize(date.getMinutes())}:${normalize(date.getSeconds())}`;
-	let text = ``;
-
-	switch (type) {
-		case (`start`):
-			text = logs[type].replace(`[time]`, time)
-				.replace(`[player1]`, player1.name)
-				.replace(`[player2]`, player2.name);
-			break;
-
-		case (`end`):
-			text = logs[type][randomNumbers(0, logs[type].length - 1)]
-				.replace(`[playerLose]`, player2.name)
-				.replace(`[playerWins]`, player1.name)
-			break;
-
-		case (`hit`):
-			text = logs[type][randomNumbers(0, logs[type].length - 1)]
-				.replace(`[playerDefence]`, player1.name)
-				.replace(`[playerKick]`, player2.name)
-			break;
-
-		case (`defence`):
-			text = logs[type][randomNumbers(0, logs[type].length - 1)]
-				.replace(`[playerKick]`, player1.name)
-				.replace(`[playerDefence]`, player2.name)
-			break;
-
-		case (`draw`):
-			text = logs.draw;
-	};
-
-	const chatText = `<p>[${time}] - ${text}</p> `;
-	$chat.insertAdjacentHTML(`afterbegin`, chatText);
-}
-
-document.onload = generateLogs(`start`, player1, player2);
 
