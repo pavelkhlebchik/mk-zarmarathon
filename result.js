@@ -1,0 +1,48 @@
+import { player1, player2 } from './player.js';
+
+const $randomButton = document.querySelector(`.button`);
+const $arenas = document.querySelector(`.arenas`);
+
+
+const battleResult = (playerName) => {
+	const $title = createElement(`div`, `winTitle`);
+	if (playerName) {
+		$title.innerText = playerName + ` win`;
+	} else {
+		$title.innerText = `Draw`;
+	}
+
+	return $title;
+}
+
+const createReloadButton = () => {
+	const $reloadWrap = createElement(`div`, `reloadWrap`);
+	const $reloadButton = createElement(`button`, `button`);
+
+	$reloadButton.innerText = `restart`;
+	$reloadWrap.appendChild($reloadButton);
+
+	$reloadButton.addEventListener(`click`, function () {
+		window.location.reload()
+	});
+
+	return $reloadWrap;
+};
+
+export const showResult = () => {
+	if (player1.hp === 0 || player2.hp === 0) {
+		$randomButton.disabled = true;
+		$arenas.appendChild(createReloadButton());
+	}
+
+	if (player1.hp > player2.hp && player2.hp <= 0) {
+		$arenas.appendChild(battleResult(playerName));
+		generateLogs(`end`);
+	} else if (player2.hp > player1.hp && player1.hp <= 0) {
+		$arenas.appendChild(battleResult(enemyName));
+		generateLogs(`end`);
+	} else if (player2.hp === 0 && player1.hp === 0) {
+		$arenas.appendChild(battleResult());
+		generateLogs(`draw`);
+	}
+};
