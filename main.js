@@ -46,7 +46,6 @@ const logs = {
 	draw: 'Ничья - это тоже победа!'
 };
 
-
 const HIT = {
 	head: 30,
 	body: 25,
@@ -147,7 +146,7 @@ const battleResult = (playerName) => {
 	return $title;
 }
 
-const createReloadButton = function () {
+const createReloadButton = () => {
 	const $reloadWrap = createElement(`div`, `reloadWrap`);
 	const $reloadButton = createElement(`button`, `button`);
 
@@ -164,7 +163,7 @@ const createReloadButton = function () {
 $arenas.appendChild(createPlayer(player1));
 $arenas.appendChild(createPlayer(player2));
 
-const enemyAttack = function () {
+const enemyAttack = () => {
 	const hit = ATTACK[randomNumbers(0, 2)];
 	const defence = ATTACK[randomNumbers(0, 2)];
 	return {
@@ -174,7 +173,7 @@ const enemyAttack = function () {
 	}
 };
 
-const playerAttack = function () {
+const playerAttack = () => {
 	const attack = {};
 
 	for (let item of $formFight) {
@@ -247,7 +246,7 @@ const generateLogs = (type, player1, player2, damageHP) => {
 
 document.onload = generateLogs(`start`, player1, player2);
 
-const showResult = function () {
+const showResult = () => {
 	if (player1.hp === 0 || player2.hp === 0) {
 		$randomButton.disabled = true;
 		$arenas.appendChild(createReloadButton());
