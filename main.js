@@ -88,6 +88,7 @@ const player1 = {
 	img: `http://reactmarathon-api.herokuapp.com/assets/scorpion.gif`,
 	weapon: [`knife, spear, strapon, mem`]
 };
+const { name: playerName } = player1;
 
 const player2 = {
 	attackMessage,
@@ -100,6 +101,9 @@ const player2 = {
 	img: `http://reactmarathon-api.herokuapp.com/assets/subzero.gif`,
 	weapon: [`knife, spear, strapon, mem`]
 };
+
+const { name: enemyName } = player2;
+
 
 const createElement = (tag, className) => {
 	const $tag = document.createElement(tag);
@@ -195,21 +199,23 @@ const generateLogs = (type, player1, player2, damageHP) => {
 	const date = new Date();
 	const normalize = (num) => (num.toString().length > 1 ? num : `0${num}`);
 	const time = `${normalize(date.getHours())}:${normalize(date.getMinutes())}:${normalize(date.getSeconds())}`;
+
 	let text = ``;
 	let chatText = ``;
+
 	switch (type) {
 		case (`start`):
 			text = logs[type].replace(`[time]`, time)
-				.replace(`[player1]`, player1.name)
-				.replace(`[player2]`, player2.name);
+				.replace(`[player1]`, playerName)
+				.replace(`[player2]`, enemyName);
 			const startText = `<p>[${time}] - ${text}</p>`;
 			$chat.insertAdjacentHTML(`afterbegin`, startText)
 			break;
 
 		case (`end`):
 			text = logs[type][randomNumbers(0, logs[type].length - 1)]
-				.replace(`[playerLose]`, player2.name)
-				.replace(`[playerWins]`, player1.name)
+				.replace(`[playerLose]`, enemyName)
+				.replace(`[playerWins]`, playerName);
 
 			chatText = `<p>[${time}] - ${text}</p>`;
 			$chat.insertAdjacentHTML(`afterbegin`, chatText);
@@ -219,7 +225,7 @@ const generateLogs = (type, player1, player2, damageHP) => {
 			text = logs[type][randomNumbers(0, logs[type].length - 1)]
 				.replace(`[playerDefence]`, player1.name)
 				.replace(`[playerKick]`, player2.name)
-			chatText = `<p>[${time}] - ${text} - ${damageHP} [${player1.hp}/100] </p>`
+			chatText = `<p>[${time}] - ${text} - ${damageHP} [${(player1.hp)}/100] </p>`;
 			$chat.insertAdjacentHTML(`afterbegin`, chatText);
 			break;
 
@@ -227,7 +233,7 @@ const generateLogs = (type, player1, player2, damageHP) => {
 			text = logs[type][randomNumbers(0, logs[type].length - 1)]
 				.replace(`[playerKick]`, player1.name)
 				.replace(`[playerDefence]`, player2.name)
-			chatText = `<p>[${time}] - ${text} - ${damageHP} [${player2.hp}/100] </p>`
+			chatText = `<p>[${time}] - ${text} - ${damageHP} [${player2.hp}/100] </p>`;
 			$chat.insertAdjacentHTML(`afterbegin`, chatText);
 			break;
 
@@ -244,7 +250,7 @@ const generateLogs = (type, player1, player2, damageHP) => {
 	};
 };
 
-document.onload = generateLogs(`start`, player1, player2);
+document.onload = generateLogs(`start`);
 
 const showResult = () => {
 	if (player1.hp === 0 || player2.hp === 0) {
@@ -253,11 +259,11 @@ const showResult = () => {
 	}
 
 	if (player1.hp > player2.hp && player2.hp <= 0) {
-		$arenas.appendChild(battleResult(player1.name));
-		generateLogs(`end`, player1, player2);
+		$arenas.appendChild(battleResult(playerName));
+		generateLogs(`end`);
 	} else if (player2.hp > player1.hp && player1.hp <= 0) {
-		$arenas.appendChild(battleResult(player2.name));
-		generateLogs(`end`, player2, player1);
+		$arenas.appendChild(battleResult(enemyName));
+		generateLogs(`end`);
 	} else if (player2.hp === 0 && player1.hp === 0) {
 		$arenas.appendChild(battleResult());
 		generateLogs(`draw`);
@@ -268,23 +274,25 @@ $formFight.addEventListener(`submit`, function (evt) {
 	evt.preventDefault();
 	const enemy = enemyAttack();
 	const player = playerAttack();
+	let { value: enemyHit } = enemy;
+	let { value: playerHit } = player;
 
 	if (player.defence !== enemy.hit) {
-		player1.damage(enemy.value);
+		player1.damage(enemyHit);
 		player1.renderHP();
-		generateLogs(`hit`, player1, player2, enemy.value);
+		generateLogs(`hit`, player1, player2, enemyHit);
 	} else {
-		enemy.value = 0
-		generateLogs(`defence`, player2, player1, enemy.value);
+		enemyHit = 0;
+		generateLogs(`defence`, player2, player1, enemyHit);
 	}
 
 	if (enemy.defence !== player.hit) {
-		player2.damage(player.value);
+		player2.damage(playerHit);
 		player2.renderHP();
-		generateLogs(`hit`, player2, player1, player.value);
+		generateLogs(`hit`, player2, player1, playerHit);
 	} else {
-		player.value = 0;
-		generateLogs(`defence`, player1, player2, player.value);
+		playerHit = 0;
+		generateLogs(`defence`, player1, player2, playerHit);
 	}
 
 	showResult();
