@@ -5,11 +5,6 @@ const $randomButton = document.querySelector(`.button`);
 const $restartButton = document.querySelector(`.restartWrap .button`);
 const $formFight = document.querySelector(`.control`);
 const $chat = document.querySelector(`.chat`);
-const HIT = {
-	head: 30,
-	body: 25,
-	foot: 20
-}
 
 const logs = {
 	start: 'Часы показывали [time], когда [player1] и [player2] бросили вызов друг другу.',
@@ -50,15 +45,22 @@ const logs = {
 	],
 	draw: 'Ничья - это тоже победа!'
 };
+
+
+const HIT = {
+	head: 30,
+	body: 25,
+	foot: 20
+}
+
 const ATTACK = [`head`, `body`, `foot`];
 
-const randomNumbers = function (min, max) {
-	return Math.floor(Math.random() * (max - min + 1) + min);
-};
+const randomNumbers = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 const attackMessage = function () {
 	console.log(console.log(this.name + ` Fight`));
 }
+
 const changeHP = function (damage) {
 	this.hp -= damage;
 
@@ -69,7 +71,6 @@ const changeHP = function (damage) {
 
 const elHP = function () {
 	const $playerLife = document.querySelector(`.player` + this.player + ` .life`);
-
 	return $playerLife;
 };
 
@@ -78,30 +79,30 @@ const renderHP = function () {
 };
 
 const player1 = {
+	attackMessage,
+	elHP,
+	renderHP,
+	damage: changeHP,
 	player: 1,
 	name: `SCORPION`,
 	hp: 100,
 	img: `http://reactmarathon-api.herokuapp.com/assets/scorpion.gif`,
-	weapon: [`knife, spear, strapon, mem`],
-	attackMessage,
-	damage: changeHP,
-	elHP,
-	renderHP
+	weapon: [`knife, spear, strapon, mem`]
 };
 
 const player2 = {
+	attackMessage,
+	elHP,
+	renderHP,
+	damage: changeHP,
 	player: 2,
 	name: `SUB-ZERO`,
 	hp: 100,
 	img: `http://reactmarathon-api.herokuapp.com/assets/subzero.gif`,
-	weapon: [`knife, spear, strapon, mem`],
-	attackMessage,
-	damage: changeHP,
-	elHP,
-	renderHP
+	weapon: [`knife, spear, strapon, mem`]
 };
 
-const createElement = function (tag, className) {
+const createElement = (tag, className) => {
 	const $tag = document.createElement(tag);
 	if (className) {
 		$tag.classList.add(className);
@@ -110,7 +111,7 @@ const createElement = function (tag, className) {
 	return $tag;
 };
 
-const createPlayer = function (player) {
+const createPlayer = (player) => {
 	const $player = createElement(`div`, `player` + player.player);
 	const $progressBar = createElement(`div`, `progressbar`);
 	const $character = createElement(`div`, `character`);
@@ -135,7 +136,7 @@ const createPlayer = function (player) {
 	return $player;
 };
 
-const battleResult = function (playerName) {
+const battleResult = (playerName) => {
 	const $title = createElement(`div`, `winTitle`);
 	if (playerName) {
 		$title.innerText = playerName + ` win`;
@@ -191,7 +192,7 @@ const playerAttack = function () {
 	return attack;
 }
 
-const generateLogs = function (type, player1, player2, damageHP) {
+const generateLogs = (type, player1, player2, damageHP) => {
 	const date = new Date();
 	const normalize = (num) => (num.toString().length > 1 ? num : `0${num}`);
 	const time = `${normalize(date.getHours())}:${normalize(date.getMinutes())}:${normalize(date.getSeconds())}`;
