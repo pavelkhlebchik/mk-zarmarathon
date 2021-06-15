@@ -235,6 +235,12 @@ const generateLogs = function (type, player1, player2, damageHP) {
 			text = logs.draw;
 			chatText = `<p>[${time}] - ${text}</p>`;
 			$chat.insertAdjacentHTML(`afterbegin`, chatText);
+			break;
+
+		default:
+			text = `Бой пока не начался`;
+			chatText = `<p>[${time}] - ${text}</p>`;
+			$chat.insertAdjacentHTML(`afterbegin`, chatText);
 	};
 };
 
