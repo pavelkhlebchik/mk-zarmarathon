@@ -1,3 +1,4 @@
+import { randomNumbers } from './utils.js';
 import { logs } from './data.js';
 import { playerName, enemyName } from './player.js';
 

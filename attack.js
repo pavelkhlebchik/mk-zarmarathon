@@ -1,4 +1,4 @@
-import randomNumbers from './utils.js';
+import { randomNumbers } from './utils.js';
 import { HIT, ATTACK } from './data.js';
 
 const $formFight = document.querySelector(`.control`);
