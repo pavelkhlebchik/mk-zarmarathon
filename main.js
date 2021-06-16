@@ -1,19 +1,11 @@
 import { player1, player2 } from './player.js';
+import { createElement } from './utils.js';
 import { enemyAttack, playerAttack } from './attack.js';
 import { showResult } from './result.js';
 import { generateLogs } from './log.js';
 
 const $arenas = document.querySelector(`.arenas`);
 const $formFight = document.querySelector(`.control`);
-
-const createElement = (tag, className) => {
-	const $tag = document.createElement(tag);
-	if (className) {
-		$tag.classList.add(className);
-	}
-
-	return $tag;
-};
 
 const createPlayer = (player) => {
 	const $player = createElement(`div`, `player` + player.player);
