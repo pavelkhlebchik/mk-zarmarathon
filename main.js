@@ -30,13 +30,12 @@ const createPlayer = (player) => {
 	$player.appendChild($character);
 
 	return $player;
+}
+const init = () => {
+	$arenas.appendChild(createPlayer(player1));
+	$arenas.appendChild(createPlayer(player2));
+	generateLogs(`start`);
 };
-
-$arenas.appendChild(createPlayer(player1));
-$arenas.appendChild(createPlayer(player2));
-
-document.onload = generateLogs(`start`);
-
 
 $formFight.addEventListener(`submit`, function (evt) {
 	evt.preventDefault();
@@ -65,5 +64,7 @@ $formFight.addEventListener(`submit`, function (evt) {
 
 	showResult();
 });
+
+init();
 
 
