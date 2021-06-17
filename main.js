@@ -1,5 +1,4 @@
-import { player1, player2 } from './player.js';
-import { createElement } from './utils.js';
+import { Player } from './player.js';
 import { enemyAttack, playerAttack } from './attack.js';
 import { showResult } from './result.js';
 import { generateLogs } from './log.js';
@@ -7,33 +6,33 @@ import { generateLogs } from './log.js';
 const $arenas = document.querySelector(`.arenas`);
 const $formFight = document.querySelector(`.control`);
 
-const createPlayer = (player) => {
-	const $player = createElement(`div`, `player` + player.player);
-	const $progressBar = createElement(`div`, `progressbar`);
-	const $character = createElement(`div`, `character`);
-	const $life = createElement(`div`, `life`);
-	const $name = createElement(`div`, `name`);
-	const $playerImage = createElement(`img`);
 
-	$life.style.width = player.hp + `%`;
-	$name.innerText = player.name;
-	$playerImage.src = player.img;
+const player1 = new Player({
+	player: 1,
+	name: `SCORPION`,
+	hp: 100,
+	img: `http://reactmarathon-api.herokuapp.com/assets/scorpion.gif`,
+	weapon: [`knife, spear, strapon, mem`],
+	rootSelector: `arenas`
+});
 
+const player2 = new Player({
+	player: 2,
+	name: `SUB-ZERO`,
+	hp: 100,
+	img: `http://reactmarathon-api.herokuapp.com/assets/subzero.gif`,
+	weapon: [`knife, spear, strapon, mem`],
+	rootSelector: `arenas`
+});
 
+const { name: playerName } = player1;
 
-	$progressBar.appendChild($name);
-	$progressBar.appendChild($life);
+const { name: enemyName } = player2;
 
-	$character.appendChild($playerImage);
-
-	$player.appendChild($progressBar);
-	$player.appendChild($character);
-
-	return $player;
-}
 const init = () => {
-	$arenas.appendChild(createPlayer(player1));
-	$arenas.appendChild(createPlayer(player2));
+	player1.createPlayer();
+	player2.createPlayer();
+
 	generateLogs(`start`);
 };
 
@@ -45,7 +44,7 @@ $formFight.addEventListener(`submit`, function (evt) {
 	let { value: playerHit } = player;
 
 	if (player.defence !== enemy.hit) {
-		player1.damage(enemyHit);
+		player1.changeHP(enemyHit);
 		player1.renderHP();
 		generateLogs(`hit`, player1, player2, enemyHit);
 	} else {
@@ -54,7 +53,7 @@ $formFight.addEventListener(`submit`, function (evt) {
 	}
 
 	if (enemy.defence !== player.hit) {
-		player2.damage(playerHit);
+		player2.changeHP(playerHit);
 		player2.renderHP();
 		generateLogs(`hit`, player2, player1, playerHit);
 	} else {
@@ -68,3 +67,4 @@ $formFight.addEventListener(`submit`, function (evt) {
 init();
 
 
+export { player1, player2, playerName, enemyName };

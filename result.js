@@ -1,4 +1,4 @@
-import { player1, player2, playerName, enemyName } from './player.js';
+import { player1, player2, playerName, enemyName } from './main.js';
 import { createElement } from './utils.js';
 import { generateLogs } from './log.js';
 

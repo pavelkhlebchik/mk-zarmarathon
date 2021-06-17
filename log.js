@@ -1,6 +1,6 @@
 import { randomNumbers, getDate } from './utils.js';
 import { logs } from './data.js';
-import { playerName, enemyName } from './player.js';
+import { playerName, enemyName } from './main.js';
 
 const $chat = document.querySelector(`.chat`);
 

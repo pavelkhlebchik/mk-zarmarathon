@@ -1,50 +1,66 @@
-const attackMessage = function () {
-	console.log(console.log(this.name + ` Fight`));
+import { createElement } from './utils.js';
+
+
+class Player {
+	constructor(props) {
+		this.player = props.player;
+		this.name = props.name;
+		this.hp = props.hp;
+		this.img = props.img;
+		this.weapon = props.weapon;
+		this.selector = `player${this.player}`;
+		this.rootSelector = props.rootSelector;
+	}
+
+	attackMessage = () => {
+		console.log(console.log(this.name + ` Fight`));
+	}
+
+	elHP = () => {
+		return document.querySelector(`.player${this.player} .life`);
+	};
+
+	changeHP = (damage) => {
+		this.hp -= damage;
+
+		if (this.hp <= 0) {
+			this.hp = 0;
+		}
+	};
+
+	renderHP = () => {
+		this.elHP().style.width = this.hp + `%`;
+		console.log(this.hp);
+
+	};
+
+	createPlayer = () => {
+		const $player = createElement(`div`, this.selector);
+		const $progressBar = createElement(`div`, `progressbar`);
+		const $character = createElement(`div`, `character`);
+		const $life = createElement(`div`, `life`);
+		const $name = createElement(`div`, `name`);
+		const $playerImage = createElement(`img`);
+
+		$life.style.width = this.hp + `%`;
+		$name.innerText = this.name;
+		$playerImage.src = this.img;
+
+
+
+		$progressBar.appendChild($name);
+		$progressBar.appendChild($life);
+
+		$character.appendChild($playerImage);
+
+		$player.appendChild($progressBar);
+		$player.appendChild($character);
+
+		const $root = document.querySelector(`.${this.rootSelector}`);
+		$root.appendChild($player);
+
+		return $player;
+	};
 }
 
-const changeHP = function (damage) {
-	this.hp -= damage;
-
-	if (this.hp <= 0) {
-		this.hp = 0;
-	}
-};
-
-const elHP = function () {
-	const $playerLife = document.querySelector(`.player` + this.player + ` .life`);
-	return $playerLife;
-};
-
-const renderHP = function () {
-	this.elHP().style.width = this.hp + `%`;
-};
-
-const player1 = {
-	attackMessage,
-	elHP,
-	renderHP,
-	damage: changeHP,
-	player: 1,
-	name: `SCORPION`,
-	hp: 100,
-	img: `http://reactmarathon-api.herokuapp.com/assets/scorpion.gif`,
-	weapon: [`knife, spear, strapon, mem`]
-};
-
-const player2 = {
-	attackMessage,
-	elHP,
-	renderHP,
-	damage: changeHP,
-	player: 2,
-	name: `SUB-ZERO`,
-	hp: 100,
-	img: `http://reactmarathon-api.herokuapp.com/assets/subzero.gif`,
-	weapon: [`knife, spear, strapon, mem`]
-};
-
-const { name: playerName } = player1;
-
-const { name: enemyName } = player2;
-
-export { player1, player2, playerName, enemyName };
+export { Player };
