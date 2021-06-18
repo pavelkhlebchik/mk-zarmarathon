@@ -1,4 +1,3 @@
-// import { enemyAttack, playerAttack } from './attack.js';
 import { Player } from './player.js';
 import { HIT, ATTACK } from './data.js';
 import { randomNumbers } from './utils.js';
@@ -8,7 +7,7 @@ import { showResult } from './result.js';
 
 
 export class Game {
-	constructor(props) {
+	constructor() {
 		this.$arenas = document.querySelector(`.arenas`);
 		this.$formFight = document.querySelector(`.control`);
 		this.$randomButton = document.querySelector(`.button`);
@@ -33,6 +32,10 @@ export class Game {
 		});
 
 		this.start = () => {
+
+			this.player1.createPlayer();
+			this.player2.createPlayer();
+			generateLogs(`start`, this.player1, this.player2);
 
 			const enemyAttack = () => {
 				const hit = ATTACK[randomNumbers(0, 2)];
@@ -85,21 +88,14 @@ export class Game {
 					playerHit = 0;
 					generateLogs(`defence`, this.player1, this.player2, playerHit);
 				}
+
+				showResult(this.player1, this.player2);
 			};
 
 			this.$formFight.addEventListener(`submit`, function (evt) {
 				evt.preventDefault();
 				letsFight();
-				showResult();
 			});
-
-			const init = () => {
-				this.player1.createPlayer();
-				this.player2.createPlayer();
-
-				generateLogs(`start`);
-			};
-			init();
 		}
 	}
 }

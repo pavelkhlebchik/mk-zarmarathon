@@ -1,11 +1,8 @@
 import { randomNumbers, getDate } from './utils.js';
 import { logs } from './data.js';
-// import { Player } from './game.js';
-// import { Player } from './player.js';
-// import { playerName, enemyName } from './game.js';
+
 
 const $chat = document.querySelector(`.chat`);
-
 export const generateLogs = (type, player1, player2, damageHP) => {
 	let text = ``;
 	let chatText = ``;
@@ -15,6 +12,7 @@ export const generateLogs = (type, player1, player2, damageHP) => {
 			text = logs[type].replace(`[time]`, getDate())
 				.replace(`[player1]`, player1.name)
 				.replace(`[player2]`, player2.name);
+
 			const startText = `<p>[${getDate()}] - ${text}</p>`;
 			$chat.insertAdjacentHTML(`afterbegin`, startText)
 			break;
@@ -54,5 +52,6 @@ export const generateLogs = (type, player1, player2, damageHP) => {
 			text = `Бой пока не начался`;
 			chatText = `<p>[${getDate()}] - ${text}</p>`;
 			$chat.insertAdjacentHTML(`afterbegin`, chatText);
+			break;
 	};
 };

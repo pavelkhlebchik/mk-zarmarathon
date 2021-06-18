@@ -30,8 +30,6 @@ class Player {
 
 	renderHP = () => {
 		this.elHP().style.width = this.hp + `%`;
-		console.log(this.hp);
-
 	};
 
 	createPlayer = () => {
