@@ -1,34 +1,32 @@
-import { randomNumbers } from './utils.js';
-import { HIT, ATTACK } from './data.js';
 
-const $formFight = document.querySelector(`.control`);
+// const $formFight = document.querySelector(`.control`);
 
-const enemyAttack = () => {
-	const hit = ATTACK[randomNumbers(0, 2)];
-	const defence = ATTACK[randomNumbers(0, 2)];
-	return {
-		value: randomNumbers(HIT[hit], HIT[hit]),
-		hit,
-		defence
-	}
-};
+// const enemyAttack = () => {
+// 	const hit = ATTACK[randomNumbers(0, 2)];
+// 	const defence = ATTACK[randomNumbers(0, 2)];
+// 	return {
+// 		value: randomNumbers(HIT[hit], HIT[hit]),
+// 		hit,
+// 		defence
+// 	}
+// };
 
-const playerAttack = () => {
-	const attack = {};
+// const playerAttack = () => {
+// 	const attack = {};
 
-	for (let item of $formFight) {
-		if (item.checked && item.name === `hit`) {
-			attack.value = randomNumbers(HIT[item.value], HIT[item.value]);
-			attack.hit = item.value;
-		}
+// 	for (let item of $formFight) {
+// 		if (item.checked && item.name === `hit`) {
+// 			attack.value = randomNumbers(HIT[item.value], HIT[item.value]);
+// 			attack.hit = item.value;
+// 		}
 
-		if (item.checked && item.name === `defence`) {
-			attack.defence = item.value;
-		}
-		item.checked = false;
-	}
+// 		if (item.checked && item.name === `defence`) {
+// 			attack.defence = item.value;
+// 		}
+// 		item.checked = false;
+// 	}
 
-	return attack;
-};
+// 	return attack;
+// };
 
-export { enemyAttack, playerAttack };
+// export { enemyAttack, playerAttack };

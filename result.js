@@ -1,4 +1,3 @@
-import { player1, player2, playerName, enemyName } from './main.js';
 import { createElement } from './utils.js';
 import { generateLogs } from './log.js';
 
@@ -38,11 +37,11 @@ export const showResult = () => {
 	}
 
 	if (player1.hp > player2.hp && player2.hp <= 0) {
-		$arenas.appendChild(battleResult(playerName));
+		$arenas.appendChild(battleResult(player1.name));
 		player1.img = `https://media1.tenor.com/images/9e37018bf6260d7ccf43c3116e284123/tenor.gif?itemid=13993543`;
 		generateLogs(`end`);
 	} else if (player2.hp > player1.hp && player1.hp <= 0) {
-		$arenas.appendChild(battleResult(enemyName));
+		$arenas.appendChild(battleResult(player2.name));
 		generateLogs(`end`);
 	} else if (player2.hp === 0 && player1.hp === 0) {
 		$arenas.appendChild(battleResult());
