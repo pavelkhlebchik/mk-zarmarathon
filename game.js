@@ -24,6 +24,8 @@ export class Game {
 		}
 
 		this.start = async () => {
+			const players = await this.getPlayers();
+
 			const p1 = JSON.parse(localStorage.getItem(`player1`));
 			const p2 = await this.chooseEnemy();
 			// players[randomNumbers(0, (players.length - 1))];
