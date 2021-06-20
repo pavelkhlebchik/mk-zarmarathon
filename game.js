@@ -14,23 +14,27 @@ export class Game {
 		this.$chat = document.querySelector(`.chat`);
 
 		this.getPlayers = async () => {
-			const body = fetch(`https://reactmarathon-api.herokuapp.com/api/mk/players`).then(res => res.json());
+			const body = fetch(`https://reactmarathon-api.herokuapp.com/api/mk/players`).then(response => response.json());
+			return body;
+		}
+
+		this.chooseEnemy = async () => {
+			const body = fetch(`https://reactmarathon-api.herokuapp.com/api/mk/player/choose`).then(response => response.json());
 			return body;
 		}
 
 		this.start = async () => {
-			const players = await this.getPlayers();
-
 			const p1 = JSON.parse(localStorage.getItem(`player1`));
-			const p2 = players[randomNumbers(0, (players.length - 1))];
-			this.player1 = new Player ({
+			const p2 = await this.chooseEnemy();
+			// players[randomNumbers(0, (players.length - 1))];
+			this.player1 = new Player({
 				...p1,
 				player: 1,
 				rootSelector: `arenas`,
 			});
 
-			
-			this.player2 = new Player ({
+
+			this.player2 = new Player({
 				...p2,
 				player: 2,
 				rootSelector: `arenas`
@@ -38,7 +42,7 @@ export class Game {
 
 			this.player1.createPlayer();
 			this.player2.createPlayer();
-			
+
 			generateLogs(`start`, this.player1, this.player2);
 
 			const enemyAttack = () => {
