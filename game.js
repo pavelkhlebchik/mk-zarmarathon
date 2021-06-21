@@ -13,28 +13,38 @@ export class Game {
 		this.$randomButton = document.querySelector(`.button`);
 		this.$chat = document.querySelector(`.chat`);
 
-		this.player1 = new Player({
-			player: 1,
-			name: `SCORPION`,
-			hp: 100,
-			img: `http://reactmarathon-api.herokuapp.com/assets/scorpion.gif`,
-			weapon: [`knife, spear, strapon, mem`],
-			rootSelector: `arenas`
-		});
+		this.getPlayers = async () => {
+			const body = fetch(`https://reactmarathon-api.herokuapp.com/api/mk/players`).then(response => response.json());
+			return body;
+		}
 
-		this.player2 = new Player({
-			player: 2,
-			name: `SUB-ZERO`,
-			hp: 100,
-			img: `http://reactmarathon-api.herokuapp.com/assets/subzero.gif`,
-			weapon: [`knife, spear, strapon, mem`],
-			rootSelector: `arenas`
-		});
+		this.chooseEnemy = async () => {
+			const body = fetch(`https://reactmarathon-api.herokuapp.com/api/mk/player/choose`).then(response => response.json());
+			return body;
+		}
 
-		this.start = () => {
+		this.start = async () => {
+			const players = await this.getPlayers();
+
+			const p1 = JSON.parse(localStorage.getItem(`player1`));
+			const p2 = await this.chooseEnemy();
+			// players[randomNumbers(0, (players.length - 1))];
+			this.player1 = new Player({
+				...p1,
+				player: 1,
+				rootSelector: `arenas`,
+			});
+
+
+			this.player2 = new Player({
+				...p2,
+				player: 2,
+				rootSelector: `arenas`
+			});
 
 			this.player1.createPlayer();
 			this.player2.createPlayer();
+
 			generateLogs(`start`, this.player1, this.player2);
 
 			const enemyAttack = () => {

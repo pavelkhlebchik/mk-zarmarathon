@@ -25,6 +25,7 @@ const createReloadButton = () => {
 
 	$reloadButton.addEventListener(`click`, function () {
 		window.location.reload()
+		window.location.pathname = `index.html`;
 	});
 
 	return $reloadWrap;
